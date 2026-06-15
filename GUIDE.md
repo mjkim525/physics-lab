@@ -57,7 +57,9 @@ docker compose up
 
 ### 4단계: 브라우저에서 확인
 
-**http://localhost:8080** 을 열면 사이트가 보입니다.
+**http://localhost:8080/physics-lab/** 을 열면 사이트가 보입니다.
+
+> `baseurl`이 `/physics-lab`로 설정되어 있어 주소 끝에 `/physics-lab/`까지 붙여야 합니다.
 
 ### 종료
 
