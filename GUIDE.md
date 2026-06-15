@@ -34,22 +34,36 @@
 
 ---
 
-## 로컬 개발 환경
+## 로컬에서 웹사이트 열기
 
-Docker를 사용하는 것을 권장합니다.
+### 1단계: Docker Desktop 설치
+
+https://www.docker.com/products/docker-desktop 에서 운영체제에 맞게 다운로드 후 설치하세요.
+
+### 2단계: 코드 받기
 
 ```bash
-# 처음 시작할 때
-docker compose pull && docker compose up
-
-# 의존성 또는 Dockerfile 변경 후
-docker compose up --build
-
-# 종료
-docker compose down
+git clone https://github.com/mjkim525/physics-lab.git
+cd physics-lab
 ```
 
-실행 후 **http://localhost:8080** 에서 확인하세요.
+### 3단계: 서버 실행
+
+```bash
+docker compose up
+```
+
+처음 실행 시 5~10분 정도 소요될 수 있습니다 (이미지 다운로드).
+
+### 4단계: 브라우저에서 확인
+
+**http://localhost:8080** 을 열면 사이트가 보입니다.
+
+### 종료
+
+터미널에서 `Ctrl + C`
+
+> 두 번째 실행부터는 3단계(`docker compose up`)만 하면 됩니다.
 
 ---
 
