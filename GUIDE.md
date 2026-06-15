@@ -1,316 +1,207 @@
-# 연구실 홈페이지 관리 가이드
+# Yonsei NPL 웹사이트 인수인계 가이드
 
-> **Yonsei Nuclear Physics Laboratory 홈페이지 운영 매뉴얼**
->
-> 이 문서는 **프로그래밍을 몰라도** 홈페이지 내용을 직접 고칠 수 있도록 만든 안내서입니다.
-> 순서대로 따라 하면 됩니다. 어려운 용어는 모두 풀어서 설명했습니다.
-
-- 홈페이지 주소: **https://mjkim525.github.io/physics-lab**
-- 소스코드 저장소(GitHub): **https://github.com/mjkim525/physics-lab**
+> **Kim Minjae's Nuclear Physics Laboratory @ Yonsei University**  
+> 배포 주소: **https://mjkim525.github.io/physics-lab**  
+> GitHub 리포: **https://github.com/mjkim525/physics-lab**
 
 ---
 
 ## 목차
 
-1. [먼저 알아둘 것 (5분)](#1-먼저-알아둘-것-5분)
-2. [준비: 프로그램 설치 (처음 한 번만)](#2-준비-프로그램-설치-처음-한-번만)
-3. [내용을 고치는 전체 흐름](#3-내용을-고치는-전체-흐름)
-4. [내 컴퓨터에서 홈페이지 미리 보기](#4-내-컴퓨터에서-홈페이지-미리-보기)
-5. [무엇을 어디서 고치나 — 항목별 안내](#5-무엇을-어디서-고치나--항목별-안내)
-   - [5.1 첫 화면 소개글](#51-첫-화면-소개글)
-   - [5.2 구성원(People) 추가·삭제](#52-구성원people-추가삭제)
-   - [5.3 뉴스/공지 추가](#53-뉴스공지-추가)
-   - [5.4 논문 추가](#54-논문-추가)
-   - [5.5 사진 교체·추가](#55-사진-교체추가)
-   - [5.6 이메일·소셜 링크](#56-이메일소셜-링크)
-6. [수정한 내용을 홈페이지에 반영하기 (커밋 & 푸시)](#6-수정한-내용을-홈페이지에-반영하기-커밋--푸시)
-7. [자주 나는 오류와 해결법](#7-자주-나는-오류와-해결법)
-8. [용어 사전](#8-용어-사전)
+- [기술 스택](#기술-스택)
+- [로컬 개발 환경](#로컬-개발-환경)
+- [배포 방법](#배포-방법)
+- [콘텐츠 수정 가이드](#콘텐츠-수정-가이드)
+  - [기본 정보](#1-기본-정보-_configyml)
+  - [소개 페이지](#2-소개-페이지-_pagesaboutmd)
+  - [논문](#3-논문-_bibliographypapersbib)
+  - [뉴스](#4-뉴스-_news)
+  - [구성원](#5-구성원-_pagesprofilesmd)
+  - [CV](#6-cv-_datacvyml)
+  - [소셜 링크](#7-소셜-링크-_datasocialsyml)
+- [커밋 전 체크리스트](#커밋-전-체크리스트)
 
 ---
 
-## 1. 먼저 알아둘 것 (5분)
+## 기술 스택
 
-이 홈페이지는 **글(텍스트) 파일들의 모음**으로 이루어져 있습니다.
-워드 문서를 고치듯이 텍스트를 고치면 홈페이지 내용이 바뀝니다. 다만 두 가지만 다릅니다.
-
-1. **고친 파일을 GitHub라는 저장소에 "올려야"** 실제 홈페이지에 반영됩니다.
-2. 올리고 나면 **약 2~3분 뒤에 자동으로** 인터넷 홈페이지가 새 내용으로 바뀝니다.
-
-작업의 큰 그림은 항상 이 순서입니다.
-
-```
-① 파일 고치기 → ② 내 컴퓨터에서 미리 보기(선택) → ③ GitHub에 올리기 → ④ 2~3분 기다리기 → 끝
-```
-
-> **걱정하지 마세요.** 무엇을 잘못 고쳐도 이전 상태로 되돌릴 수 있습니다.
-> 모든 변경 기록이 GitHub에 남기 때문에 "망가뜨릴 수 없는" 구조입니다.
+| 항목       | 내용                                                 |
+| ---------- | ---------------------------------------------------- |
+| 프레임워크 | [Jekyll](https://jekyllrb.com/) (al-folio 테마 기반) |
+| 호스팅     | GitHub Pages                                         |
+| 배포       | GitHub Actions (push 시 자동)                        |
+| 포맷터     | Prettier                                             |
 
 ---
 
-## 2. 준비: 프로그램 설치 (처음 한 번만)
+## 로컬에서 웹사이트 열기
 
-다음 3가지를 설치하세요. 모두 무료입니다.
+### 1단계: Docker Desktop 설치
 
-| 프로그램           | 용도                               | 다운로드 주소                                  |
-| ------------------ | ---------------------------------- | ---------------------------------------------- |
-| **Git**            | 파일을 GitHub에 올리는 도구        | https://git-scm.com/downloads                  |
-| **VS Code**        | 텍스트 파일을 편하게 고치는 편집기 | https://code.visualstudio.com/                 |
-| **Docker Desktop** | 내 컴퓨터에서 홈페이지 미리 보기용 | https://www.docker.com/products/docker-desktop |
+https://www.docker.com/products/docker-desktop 에서 운영체제에 맞게 다운로드 후 설치하세요.
 
-> Docker는 "미리 보기"에만 필요합니다. 미리 보기 없이 바로 올려도 되지만,
-> 처음에는 미리 보면서 확인하는 것을 권장합니다.
-
-### 소스코드 내려받기 (처음 한 번만)
-
-VS Code를 켜고, 메뉴에서 **터미널(Terminal) → 새 터미널(New Terminal)** 을 연 뒤 아래를 한 줄씩 입력합니다.
+### 2단계: 코드 받기
 
 ```bash
 git clone https://github.com/mjkim525/physics-lab.git
 cd physics-lab
 ```
 
-이제 `physics-lab` 폴더 안에 모든 파일이 들어 있습니다.
-VS Code에서 **파일 → 폴더 열기**로 이 폴더를 열면 작업 준비 끝입니다.
+### 3단계: 서버 실행
+
+```bash
+docker compose up
+```
+
+처음 실행 시 5~10분 정도 소요될 수 있습니다 (이미지 다운로드).
+
+### 4단계: 브라우저에서 확인
+
+**http://localhost:8080** 을 열면 사이트가 보입니다.
+
+### 종료
+
+터미널에서 `Ctrl + C`
+
+> 두 번째 실행부터는 3단계(`docker compose up`)만 하면 됩니다.
 
 ---
 
-## 3. 내용을 고치는 전체 흐름
+## 배포 방법
 
-1. VS Code에서 `physics-lab` 폴더를 엽니다.
-2. **항상 최신 상태로 시작하기** — 터미널에 아래를 입력해 다른 사람이 올린 변경을 받아옵니다.
+`main` 브랜치에 push하면 GitHub Actions가 자동으로 빌드 및 배포합니다.
 
-   ```bash
-   git pull
-   ```
+```bash
+git add <수정한 파일>
+git commit -m "설명"
+git push origin main
+```
 
-3. 고치고 싶은 파일을 찾아([5번](#5-무엇을-어디서-고치나--항목별-안내) 참고) 내용을 수정합니다.
-4. (선택) [내 컴퓨터에서 미리 보기](#4-내-컴퓨터에서-홈페이지-미리-보기)로 확인합니다.
-5. [GitHub에 올립니다](#6-수정한-내용을-홈페이지에-반영하기-커밋--푸시).
-
----
-
-## 4. 내 컴퓨터에서 홈페이지 미리 보기
-
-올리기 전에 내 컴퓨터에서 먼저 확인할 수 있습니다. (Docker Desktop이 켜져 있어야 합니다.)
-
-1. Docker Desktop 프로그램을 실행합니다.
-2. VS Code 터미널에 입력:
-
-   ```bash
-   docker compose up
-   ```
-
-3. **처음에는 5~10분** 걸립니다. 화면에 글자가 멈추고 `Server running...` 비슷한 문구가 보이면 준비 완료입니다.
-4. 웹 브라우저(크롬 등)를 열고 주소창에 입력: **http://localhost:8080**
-5. 파일을 고치고 저장하면, 브라우저를 새로고침(F5)할 때마다 바뀐 내용이 보입니다.
-6. 확인이 끝나면 터미널에서 **Ctrl + C** 를 눌러 종료합니다.
-
-> 두 번째부터는 그냥 `docker compose up` 한 줄이면 됩니다 (다시 5~10분 걸리지 않습니다).
+Actions 진행 상황: https://github.com/mjkim525/physics-lab/actions
 
 ---
 
-## 5. 무엇을 어디서 고치나 — 항목별 안내
+## 콘텐츠 수정 가이드
 
-> **공통 팁:** 파일을 찾을 때는 VS Code 왼쪽의 파일 목록에서 폴더를 펼쳐 찾거나,
-> `Ctrl + P` 를 눌러 파일 이름을 입력하면 빠르게 열 수 있습니다.
+### 1. 기본 정보 (`_config.yml`)
 
-### 5.1 첫 화면 소개글
+사이트 전체에 영향을 주는 전역 설정입니다.
 
-- **고칠 파일:** `_pages/about.md`
-- 파일 위쪽의 `---` 와 `---` 사이는 **설정**이니 건드리지 말고, 그 **아래 문단(영어 소개글)** 만 고치세요.
+| 항목        | 키                        | 설명                     |
+| ----------- | ------------------------- | ------------------------ |
+| 사이트 제목 | `title`                   | 브라우저 탭, 헤더에 표시 |
+| 연구실명    | `lab_name`                | 콘텐츠 헤더에 표시       |
+| 대표자 이름 | `first_name`, `last_name` | 교수님 성함              |
+| 연락처 안내 | `contact_note`            | 지원 문의 안내 문구      |
+| 키워드      | `keywords`                | SEO용 메타 태그          |
+| 배포 URL    | `url`, `baseurl`          | GitHub Pages 주소        |
+
+> **주의:** `url`과 `baseurl`은 항상 함께 수정하세요.  
+> 현재 값: `url: https://mjkim525.github.io/physics-lab/` / `baseurl: /physics-lab`
+
+---
+
+### 2. 소개 페이지 (`_pages/about.md`)
+
+메인 페이지(홈)의 텍스트와 프로필 사진을 수정합니다.
 
 ```markdown
-Welcome to the **Nuclear Physics Laboratory** at Yonsei University. ...
-(이 부분이 홈페이지 첫 화면에 보이는 소개글입니다)
+---
+layout: about
+title: about
+permalink: /
+---
+
+여기에 연구실 소개 텍스트를 작성하세요.
 ```
 
-- `**굵게**`, `<a href="mailto:주소">텍스트</a>`(이메일 링크) 같은 표시는 그대로 두고 글자만 바꾸면 됩니다.
+프로필 이미지는 `assets/img/` 에 넣고 frontmatter의 `image` 항목을 수정하세요.
 
-### 5.2 구성원(People) 추가·삭제
+---
 
-- **고칠 파일:** `_pages/profiles.md`
-- 구성원은 **직급별 묶음**(Faculty / Postdoc / PhD / Master)으로 나뉘어 있습니다.
-- 한 명은 아래와 같은 **카드 한 덩어리**로 되어 있습니다. 기존 카드 하나를 **통째로 복사**해서 이름·직급만 바꾸면 됩니다.
+### 3. 논문 (`_bibliography/papers.bib`)
 
-```html
-<div class="person-card">
-  <div class="person-avatar">🎓</div>
-  <div class="person-name">RYU, JaeHyeok</div>
-  <div class="person-title">PhD Student</div>
-  <div class="person-interests">Nuclear Physics</div>
-  <div class="person-email"></div>
-</div>
+BibTeX 형식으로 논문을 추가하면 Publications 페이지에 자동 반영됩니다.
+
+```bibtex
+@article{kim2024example,
+  title   = {논문 제목},
+  author  = {Kim, Minjae and 공저자},
+  journal = {저널명},
+  year    = {2024},
+  url     = {https://doi.org/...}
+}
 ```
 
-**새 구성원 추가하는 법:**
+al-folio 전용 필드:
 
-1. 같은 직급 그룹 안에서 카드 하나(`<div class="person-card">` 부터 짝이 되는 `</div>` 까지)를 복사합니다.
-2. 바로 아래에 붙여넣습니다.
-3. 이름(`person-name`), 직급(`person-title`), 관심 분야(`person-interests`)를 새 사람 정보로 바꿉니다.
-4. 아이콘 이모지(🎓 🔬 📚 등)는 그대로 두거나 원하는 이모지로 바꿔도 됩니다.
+- `abbr`: 배지 레이블 (예: `abbr={PRL}`)
+- `selected={true}`: 홈 화면 Featured 논문으로 표시
+- `pdf`, `code`, `poster`: 링크 버튼 추가
 
-**구성원 삭제:** 해당 카드 한 덩어리(`<div class="person-card">` ~ `</div>`)를 통째로 지웁니다.
+---
 
-> ⚠️ `<div>` 로 시작하면 반드시 짝이 되는 `</div>` 로 끝나야 합니다. 한쪽만 지우면 화면이 깨집니다.
-> 복사·붙여넣기로 통째로 다루면 실수를 막을 수 있습니다.
+### 4. 뉴스 (`_news/`)
 
-### 5.3 뉴스/공지 추가
+`_news/` 폴더에 마크다운 파일을 추가하면 News 페이지에 표시됩니다.
 
-- **고칠 폴더:** `_news/`
-- 새 소식 하나 = 파일 하나입니다. 기존 파일 하나를 복사해서 새로 만드는 것이 가장 쉽습니다.
-
-**방법:**
-
-1. `_news/` 폴더에서 아무 `announcement_숫자.md` 파일을 복사합니다.
-2. 새 파일 이름을 **기존에 없는 더 큰 숫자**로 바꿉니다. (예: `announcement_0110.md`)
-3. 내용을 아래처럼 고칩니다.
+파일명 규칙: `announcement_XXXX.md` (번호를 올려서 생성)
 
 ```markdown
 ---
 layout: post
-date: 2026-06-15 00:00:00+0900
+date: 2026-06-15
 inline: true
-related_posts: false
-category: 수상
-news_title: "여기에 제목"
-news_description: "여기에 한 줄 설명"
 ---
 
-여기에 본문 내용을 적습니다.
+새로운 뉴스 내용을 여기에 작성하세요.
 ```
 
-- `date`: 날짜 (형식 그대로, 날짜 숫자만 바꾸기). 최신 날짜가 위로 올라옵니다.
-- `category`: 분류 (예: `수상`, `발표`, `행사` 등)
-- `news_title`, `news_description`: 목록에 보이는 제목과 설명. **큰따옴표 `"`는 꼭 유지**하세요.
+- `inline: true`: 뉴스 목록에 한 줄로 표시
+- `inline: false`: 별도 페이지로 연결
 
-### 5.4 논문 추가
+---
 
-- **고칠 파일:** `_bibliography/papers.bib`
-- 논문 하나는 `@article{ ... }` 한 덩어리입니다. 기존 논문 하나를 복사해서 내용만 바꾸면 됩니다.
+### 5. 구성원 (`_pages/profiles.md`)
 
-```bibtex
-@article{고유이름_2026,
-  abbr        = {Phys.Rev.C},
-  title       = {논문 제목},
-  author      = {Kim, MinJae and others},
-  journal     = {저널 이름},
-  volume      = {112},
-  pages       = {064918},
-  year        = {2026},
-  html        = {https://논문-링크},
-  doi         = {10.xxxx/xxxxx},
-  arxiv       = {2402.54321},
-  selected    = {true}
-}
-```
+연구실 멤버 정보를 수정합니다. 프로필 사진은 `assets/img/` 에 추가하세요.
 
-- `고유이름_2026` 부분은 **다른 논문과 겹치지 않는 아무 영어 이름**이면 됩니다 (예: `phenix_2026`).
-- `selected = {true}` 를 넣으면 **첫 화면의 대표 논문**으로도 노출됩니다. 필요 없으면 그 줄을 지우세요.
-- 모든 줄 끝의 쉼표 `,` 와 중괄호 `{ }` 짝을 그대로 유지하세요.
+---
 
-### 5.5 사진 교체·추가
+### 6. CV (`_data/cv.yml`)
 
-- **사진 폴더:** `assets/img/`
-- 첫 화면·갤러리에 쓰이는 사진은 `assets/img/carousel/` 안의 `carousel_01.png`, `carousel_02.png` ... 입니다.
-- **기존 사진을 바꾸려면:** 같은 이름(`carousel_01.png` 등)으로 새 사진을 덮어쓰면 됩니다.
-- 파일 이름과 확장자(`.png`)를 동일하게 맞추는 것이 가장 안전합니다.
+CV 페이지의 데이터를 YAML 형식으로 관리합니다. 학력, 경력, 수상 등 섹션별로 구성되어 있습니다.
 
-### 5.6 이메일·소셜 링크
+---
 
-- **고칠 파일:** `_data/socials.yml`
-- 이메일, Google Scholar, INSPIRE-HEP 같은 링크가 모여 있습니다. `값` 부분만 바꾸세요.
+### 7. 소셜 링크 (`_data/socials.yml`)
+
+GitHub, Google Scholar, 이메일 등 링크를 수정합니다.
 
 ```yaml
-email: minjae.kim@snu.ac.kr # 대표 이메일
-scholar_userid: qc6CJjYAAAAJ # Google Scholar ID
-inspirehep_id: 1010907 # INSPIRE-HEP ID
+- icon: fab fa-github
+  url: https://github.com/mjkim525
+- icon: ai ai-google-scholar
+  url: https://scholar.google.com/...
 ```
 
 ---
 
-## 6. 수정한 내용을 홈페이지에 반영하기 (커밋 & 푸시)
-
-파일을 다 고쳤으면 GitHub에 올립니다. VS Code 터미널에서 **아래 3줄을 순서대로** 입력하세요.
+## 커밋 전 체크리스트
 
 ```bash
-git add .
-git commit -m "내용 설명 (예: 구성원에 홍길동 추가)"
-git push
-```
-
-- `git add .` — 고친 파일 전부를 "올릴 목록"에 담습니다. (마침표 `.` 까지 입력)
-- `git commit -m "..."` — 무엇을 바꿨는지 메모를 남깁니다. 따옴표 안 내용은 자유롭게.
-- `git push` — 실제로 GitHub에 올립니다.
-
-올린 뒤 **약 2~3분** 기다렸다가 https://mjkim525.github.io/physics-lab 를 새로고침하면 반영됩니다.
-
-> **진행 상황 확인:** https://github.com/mjkim525/physics-lab/actions 에 들어가면
-> 맨 위 항목에 **초록색 체크(✓)** 가 뜨면 성공, **빨간색 X** 가 뜨면 실패입니다.
-> 실패하면 [7번](#7-자주-나는-오류와-해결법)을 보세요.
-
----
-
-## 7. 자주 나는 오류와 해결법
-
-### "git push" 했는데 빨간 X (Actions 실패)가 떠요
-
-가장 흔한 원인은 **글자 정렬(포맷) 규칙** 위반입니다. 아래 한 줄을 터미널에 입력하면 자동으로 고쳐집니다.
-
-```bash
+# 1. Prettier 포맷 적용 (처음 한 번만: npm install --save-dev prettier @shopify/prettier-plugin-liquid)
 npx prettier . --write
+
+# 2. 로컬에서 빌드 확인
+docker compose up --build
+# → http://localhost:8080 에서 페이지, 이미지, 다크모드 확인
+
+# 3. 커밋 & 푸시
+git add <파일>
+git commit -m "설명"
+git push origin main
 ```
 
-그 다음 다시 [6번의 3줄](#6-수정한-내용을-홈페이지에-반영하기-커밋--푸시)을 입력해 올리세요.
-
-> 처음 한 번은 다음 명령으로 도구를 설치해야 할 수 있습니다.
->
-> ```bash
-> npm install --save-dev prettier @shopify/prettier-plugin-liquid
-> ```
-
-### "git push" 할 때 거부당했어요 (rejected)
-
-다른 사람이 먼저 올린 변경이 있다는 뜻입니다. 아래를 입력해 받아온 뒤 다시 push하세요.
-
-```bash
-git pull
-git push
-```
-
-### 화면이 깨져 보여요
-
-대개 `<div>` / `</div>` 짝이 안 맞거나, 따옴표 `"` 를 지운 경우입니다.
-방금 고친 부분을 다시 확인하고, 애매하면 [되돌리기](#실수했어요-이전으로-되돌리고-싶어요)를 사용하세요.
-
-### 실수했어요 — 이전으로 되돌리고 싶어요
-
-**아직 push 하지 않았다면**, 고친 내용을 전부 버리고 마지막 상태로 되돌립니다.
-
-```bash
-git restore .
-```
-
-**이미 push 한 경우**에는 직접 되돌리기 어려울 수 있으니, 관리하던 사람이나 도움을 줄 수 있는 분께 문의하세요.
-모든 기록은 GitHub에 남아 있어 복구 가능합니다.
-
----
-
-## 8. 용어 사전
-
-| 용어              | 쉬운 설명                                                        |
-| ----------------- | ---------------------------------------------------------------- |
-| **저장소(repo)**  | 홈페이지 파일들이 모여 있는 GitHub 상의 폴더                     |
-| **Git**           | 파일 변경 기록을 관리하고 GitHub에 올려주는 도구                 |
-| **커밋(commit)**  | "이만큼 고쳤다"고 메모와 함께 한 묶음으로 저장하는 것            |
-| **푸시(push)**    | 내 컴퓨터의 변경을 GitHub(인터넷)에 올리는 것                    |
-| **풀(pull)**      | GitHub에 있는 최신 내용을 내 컴퓨터로 받아오는 것                |
-| **Actions**       | 올린 뒤 자동으로 홈페이지를 만들어 배포하는 GitHub의 자동화 기능 |
-| **포맷(format)**  | 글자 정렬·줄바꿈 규칙. Prettier 도구가 자동으로 맞춰 줌          |
-| **터미널**        | 명령어를 입력하는 검은 화면. VS Code 안에서 열 수 있음           |
-| **Markdown(.md)** | `**굵게**` 같은 간단한 기호로 글을 꾸미는 텍스트 형식            |
-
----
-
-문제가 풀리지 않으면, **무엇을 하려다 어떤 화면이 나왔는지** 메모해 두고 도움을 요청하세요.
-스크린샷을 함께 남기면 해결이 훨씬 빨라집니다.
+> Prettier 검사는 GitHub Actions에서도 자동으로 실행됩니다.  
+> 포맷이 맞지 않으면 Actions가 실패하므로 반드시 로컬에서 먼저 실행하세요.
