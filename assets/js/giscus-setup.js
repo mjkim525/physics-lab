@@ -18,7 +18,7 @@ function determineGiscusTheme() {
 
   let giscusAttributes = {
     src: "https://giscus.app/client.js",
-    "data-repo": "izone00/physics-lab",
+    "data-repo": "mjkim525/physics-lab",
     "data-repo-id": "",
     "data-category": "Comments",
     "data-category-id": "",
