@@ -96,7 +96,7 @@ function initializeCookieConsent() {
               },
               {
                 title: 'More information',
-                description: 'For any queries in relation to our policy on cookies and your choices, please <a class="cc-link" href="https://izone00.github.io/physics-lab/#contact">contact us</a>.'
+                description: 'For any queries in relation to our policy on cookies and your choices, please <a class="cc-link" href="https://mjkim525.github.io/physics-lab//physics-lab/#contact">contact us</a>.'
               }
             ]
           }
