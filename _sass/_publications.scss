@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Publication and bibliography styles
+ * (styles for publication list, year headers, badges, and links)
  ******************************************************************************/
 
 @use "variables" as v;
@@ -54,7 +55,7 @@
     margin-top: 4rem;
     margin-bottom: 2rem;
     text-align: right;
-    font-family: 'Merriweather', serif;
+    font-family: "Merriweather", serif;
     font-weight: 900;
     opacity: 0.6;
   }
