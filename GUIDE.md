@@ -36,63 +36,34 @@
 
 ## 로컬에서 웹사이트 열기
 
-로컬 미리보기 방법은 두 가지입니다. 둘 중 편한 것을 고르세요.
+### 1단계: Docker Desktop 설치
 
-| 방식                           | 특징                                               |
-| ------------------------------ | -------------------------------------------------- |
-| **A. Docker** (간편)           | Docker Desktop만 설치하면 명령 1줄. 환경 충돌 없음 |
-| **B. Ruby 직접** (가볍고 빠름) | Ruby/Bundler 필요. 빌드가 빠르고 가벼움            |
+https://www.docker.com/products/docker-desktop 에서 운영체제에 맞게 다운로드 후 설치하세요.
 
-### 공통: 코드 받기
+### 2단계: 코드 받기
 
 ```bash
 git clone https://github.com/mjkim525/physics-lab.git
 cd physics-lab
 ```
 
----
+### 3단계: 서버 실행
 
-### 방식 A — Docker
+```bash
+docker compose up
+```
 
-1. Docker Desktop 설치: https://www.docker.com/products/docker-desktop
-2. 서버 실행:
+처음 실행 시 5~10분 정도 소요될 수 있습니다 (이미지 다운로드).
 
-   ```bash
-   docker compose up
-   ```
+### 4단계: 브라우저에서 확인
 
-   처음 실행 시 5~10분 정도 소요될 수 있습니다 (이미지 다운로드).
+**http://localhost:8080** 을 열면 사이트가 보입니다.
 
-3. 브라우저에서 **http://localhost:8080** 접속
-4. 종료: 터미널에서 `Ctrl + C`
+### 종료
 
-> 두 번째 실행부터는 `docker compose up` 한 줄이면 됩니다.
+터미널에서 `Ctrl + C`
 
----
-
-### 방식 B — Ruby 직접
-
-> 미리 **Ruby**(3.x 권장)와 **Bundler**가 설치되어 있어야 합니다.
-> 확인: `ruby --version`, `bundle --version`
-> macOS는 Homebrew(`brew install ruby`), Ubuntu/WSL은 `sudo apt install ruby-full build-essential` 등으로 설치합니다.
-
-1. 의존성 설치 (처음 한 번만):
-
-   ```bash
-   bundle install
-   ```
-
-2. 서버 실행:
-
-   ```bash
-   bundle exec jekyll serve
-   ```
-
-3. 브라우저에서 **http://localhost:4000** 접속 (Docker와 포트가 다릅니다)
-4. 종료: 터미널에서 `Ctrl + C`
-
-> 파일을 고치고 저장하면 자동으로 다시 빌드됩니다. 브라우저만 새로고침(F5)하면 됩니다.
-> `_config.yml`을 고친 경우에는 서버를 껐다 다시 켜야 반영됩니다.
+> 두 번째 실행부터는 3단계(`docker compose up`)만 하면 됩니다.
 
 ---
 
